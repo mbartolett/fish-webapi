@@ -348,3 +348,10 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+.appsettings.json
+/src/WiscFishWebAPI/appsettings.json
+/src/WiscFishWebAPI/appsettings.Development.json
+/src/WiscFishWebAPI/Properties/ServiceDependencies
+/src/WiscFishWebAPI/nlog.config
