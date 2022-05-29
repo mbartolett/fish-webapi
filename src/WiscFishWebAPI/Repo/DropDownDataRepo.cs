@@ -29,11 +29,10 @@ namespace WiscFishWebAPI.Repo
             {
                 using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
                 {
-                    const string query = "SELECT * FROM Fishermen";
+                    const string query = "SELECT RTRIM(Fisherman) as Fisherman FROM Fishermen ORDER BY Fisherman";
                     con.Open();
                     fishermen = await con.QueryAsync<Fishermen>(query);
                 }
-
             }
             catch (SqlException ex)
             {
@@ -51,7 +50,7 @@ namespace WiscFishWebAPI.Repo
             {
                 using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
                 {
-                    const string query = "SELECT * FROM Fish";
+                    const string query = "SELECT RTRIM(FishType) as FishType FROM Fish";
                     con.Open();
                     fish = await con.QueryAsync<Fish>(query);
                 }
@@ -73,7 +72,7 @@ namespace WiscFishWebAPI.Repo
             {
                 using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
                 {
-                    const string query = "SELECT * FROM Years";
+                    const string query = "SELECT * FROM Years ORDER BY Year";
                     con.Open();
                     years = await con.QueryAsync<Years>(query);
                 }

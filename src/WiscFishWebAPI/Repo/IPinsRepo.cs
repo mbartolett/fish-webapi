@@ -11,5 +11,7 @@ namespace WiscFishWebAPI.Repo
         Task<IEnumerable<Pins>> GetPins();
         Task<IEnumerable<Pins>> GetPins(string year);
         Task<bool> PostPins(Pins pins);
+        Task UpdatePin(Pins pins);
+        Task DeletePin(Pins pins);
     }
 }

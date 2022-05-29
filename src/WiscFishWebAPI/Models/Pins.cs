@@ -16,5 +16,7 @@ namespace WiscFishWebAPI.Models
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public DateTime Date { get; set; }
+        public decimal Length { get; set; }
+        public bool Active { get; set; }
     }
 }

@@ -23,6 +23,22 @@ namespace WiscFishWebAPI.Repo
             _logger = logger;
         }
 
+        public async Task DeletePin(Pins pins)
+        {
+            try
+            {
+                using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
+                {
+                    con.Open();
+                    await con.UpdateAsync(pins);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("sql error {0}", ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<Pins>> GetPins()
         {
             _logger.LogInformation("getting all pins from db");
@@ -31,7 +47,7 @@ namespace WiscFishWebAPI.Repo
             {
                 using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
                 {
-                    const string query = "SELECT * FROM PINS";
+                    const string query = "SELECT * FROM PINS WHERE Active = 1";
                     con.Open();
                     pins = await con.QueryAsync<Pins>(query);
                 }
@@ -54,7 +70,7 @@ namespace WiscFishWebAPI.Repo
                 {
                     using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
                     {
-                        const string query = "SELECT * FROM PINS";
+                        const string query = "SELECT * FROM PINS WHERE Active = 1";
                         con.Open();
                         pins = await con.QueryAsync<Pins>(query);
                     }
@@ -70,7 +86,7 @@ namespace WiscFishWebAPI.Repo
                 {
                     using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
                     {
-                        const string query = "SELECT * FROM PINS WHERE DATE LIKE @year";
+                        const string query = "SELECT * FROM PINS WHERE DATE LIKE @year and Active = 1";
                         con.Open();
                         pins = await con.QueryAsync<Pins>(query, new { @year = "%" + year + "%" });
                     }
@@ -92,7 +108,7 @@ namespace WiscFishWebAPI.Repo
                 using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
                 {
                     con.Open();
-                    var id = await con.InsertAsync(new Pins { Name = pins.Name, FishType = pins.FishType, Latitude = pins.Latitude, Longitude = pins.Longitude, Date = pins.Date });
+                    var id = await con.InsertAsync(new Pins { Name = pins.Name, FishType = pins.FishType, Latitude = pins.Latitude, Longitude = pins.Longitude, Date = pins.Date, Length = pins.Length, Active = pins.Active });
 
                     inserted = id != 0;
                 }
@@ -103,6 +119,22 @@ namespace WiscFishWebAPI.Repo
             }
 
             return inserted;
+        }
+
+        public async Task UpdatePin(Pins pin)
+        {
+            try
+            {
+                using (var con = new SqlConnection(_config.GetConnectionString("DefaultConnectionString")))
+                {
+                    con.Open();
+                    await con.UpdateAsync(pin);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("sql error {0}", ex.Message);
+            }
         }
     }
 }

@@ -10,6 +10,10 @@ namespace WiscFishWebAPI.Services
     {
         Task<IEnumerable<Pins>> GetPins();
         Task<IEnumerable<Pins>> GetPins(string year);
-        Task<bool> PostPins(Pins pins);
+        Task PostPins(List<Pins> pins);
+        Task PostPin(Pins pins);
+        Task UpdatePin(Pins pins);
+        Task DeletePin(Pins pins);
+       
     }
 }

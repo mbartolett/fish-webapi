@@ -24,7 +24,6 @@ namespace WiscFishWebAPI.Controllers
             _logger = logger;
         }
 
-        // GET: api/Pins
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -42,7 +41,6 @@ namespace WiscFishWebAPI.Controllers
             }
         }
 
-        // GET: api/Pins/5
         [HttpGet("{year}", Name = "Get")]
         public async Task<IActionResult> Get(string year)
         {
@@ -69,24 +67,70 @@ namespace WiscFishWebAPI.Controllers
             }            
         }
 
-        // POST: api/Pins
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Pins Pin)
+        [Route("PostPinsList")]
+        public async Task<IActionResult> PostPinsList([FromBody] List<Pins> pins)
         {
             _logger.LogInformation("post pin request");
-            if (Pin != null)
+            if (pins != null)
             {
-                _logger.LogInformation("{@0}", Pin);
-                var inserted = await _pinsService.PostPins(Pin);
+                _logger.LogInformation("{@0}", pins);
+                await _pinsService.PostPins(pins);
+                return Ok();            
+            }
+            else
+            {
+                _logger.LogInformation("pin data missing");
+                return BadRequest();
+            }
+        }
 
-                if(!inserted)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return Ok();
-                }
+        [HttpPost]
+        [Route("PostPin")]
+        public async Task<IActionResult> PostPins([FromBody] Pins pin)
+        {
+            _logger.LogInformation("post pin request");
+            if (pin != null)
+            {
+                _logger.LogInformation("{@0}", pin);
+                await _pinsService.PostPin(pin);
+                return Ok();
+            }
+            else
+            {
+                _logger.LogInformation("pin data missing");
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdatePin")]
+        public async Task<IActionResult> UpdatePins([FromBody] Pins pin)
+        {
+            _logger.LogInformation("update pin request");
+            if (pin != null)
+            {
+                _logger.LogInformation("{@0}", pin);
+                await _pinsService.UpdatePin(pin);
+                return Ok();
+            }
+            else
+            {
+                _logger.LogInformation("pin data missing");
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Route("DeletePin")]
+        public async Task<IActionResult> DeletePins([FromBody] Pins pin)
+        {
+            _logger.LogInformation("delete pin request");
+            if (pin != null)
+            {
+                _logger.LogInformation("{@0}", pin);
+                await _pinsService.DeletePin(pin);
+                return Ok();
             }
             else
             {

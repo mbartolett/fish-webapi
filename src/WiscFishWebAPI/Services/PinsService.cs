@@ -25,9 +25,41 @@ namespace WiscFishWebAPI.Services
             return await _pinsRepo.GetPins(year);
         }
 
-        public async Task<bool> PostPins(Pins pins)
+        public async Task PostPins(List<Pins> pins)
         {
-            return await _pinsRepo.PostPins(pins);
+            if (pins.Any())
+            {
+                foreach (var pin in pins)
+                {
+                    if (pin.Longitude.Contains(")"))
+                    {
+                        pin.Longitude = pin.Longitude.TrimEnd(new Char[] { ')', ']' });
+                    }
+
+                    await _pinsRepo.PostPins(pin);
+                }
+            }
+        }
+
+        public async Task PostPin(Pins pin)
+        {
+            if (pin.Longitude.Contains(")"))
+            {
+                pin.Longitude = pin.Longitude.TrimEnd(new Char[] { ')', ']' });
+            }
+
+            await _pinsRepo.PostPins(pin);
+        }
+
+        public async Task UpdatePin(Pins pins)
+        {
+            await _pinsRepo.UpdatePin(pins);
+        }
+
+        public async Task DeletePin(Pins pins)
+        {
+            pins.Active = false;
+            await _pinsRepo.DeletePin(pins);
         }
     }
 }

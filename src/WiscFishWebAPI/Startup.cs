@@ -38,6 +38,18 @@ namespace WiscFishWebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WiscFishWebAPI", Version = "v1" });
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("allowedOrigins",
+                builder =>
+                {
+                    builder.WithOrigins("https://localhost:5001");
+                    builder.WithOrigins("https://localhost:44347");
+                    builder.WithOrigins("https://fishon.azurewebsites.net").AllowAnyHeader().AllowAnyMethod();
+                });
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,8 +59,9 @@ namespace WiscFishWebAPI
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WiscFishWebAPI v1"));
 
+            
             app.UseRouting();
-
+            app.UseCors("allowedOrigins");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

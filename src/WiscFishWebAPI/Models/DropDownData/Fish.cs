@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace WiscFishWebAPI.Models.DropDownData
 {
-    [Table("Pins.dbo.[Fish]")]
     public class Fish
     {
         public string FishType { get; set; }
